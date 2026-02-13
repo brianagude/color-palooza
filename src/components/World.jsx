@@ -1,131 +1,106 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: it's fine for meshes */
 import { useFrame } from "@react-three/fiber";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { Instances, Instance } from "@react-three/drei"
 import { useControls } from "leva";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import * as THREE from 'three'
 
 export default function Experience() {
   const cubeRef = useRef();
-  const sphereRef = useRef();
-  const torusRef = useRef();
-  const pillRef = useRef();
 
-  const INTRO_START = new THREE.Vector3(20, 20, 0)
-  const INTRO_DURATION = 2
+  // const INTRO_START = new THREE.Vector3(20, 20, 0)
+  // const INTRO_DURATION = 2
 
   useFrame((state, delta) => {
-    // state: info about the Three.js environment
-    // delta: time spent since the last frame in seconds
-
-    const elapsedTime = state.clock.getElapsedTime()
-    const t = Math.min(elapsedTime / INTRO_DURATION, 1)
+    // const elapsedTime = state.clock.getElapsedTime()
+    // const t = Math.min(elapsedTime / INTRO_DURATION, 1)
     
-    const pillPos = pillRef.current.translation()
+    // const pillPos = pillRef.current.translation()
     
-    const target = new THREE.Vector3(
-      pillPos.x - 5,
-      pillPos.y + 5,
-      pillPos.z + 5
-    )
+    // const target = new THREE.Vector3(
+    //   pillPos.x - 5,
+    //   pillPos.y + 5,
+    //   pillPos.z + 5
+    // )
 
-    if (t < 1) {
-      // Intro: lerp from start to target
-      state.camera.position.lerpVectors(INTRO_START, target, t)
-    } else {
-      // Following: smoothly lerp toward moving target
-      state.camera.position.lerp(target, 0.1) // ← Different lerp!
-    }
+  //   if (t < 1) {
+  //     state.camera.position.lerpVectors(INTRO_START, target, t)
+  //   } else {
+  //     state.camera.position.lerp(target, 0.1)
+  //   }
     
-    state.camera.lookAt(pillPos.x, pillPos.y, pillPos.z) // ← Always look at pill
+  //   state.camera.lookAt(pillPos.x, pillPos.y, pillPos.z)
 
-    cubeRef.current.rotation.y += delta;
-    sphereRef.current.rotation.x += delta;
-    sphereRef.current.rotation.y += delta;
-    torusRef.current.rotation.y += delta * 0.2;
+  //   cubeRef.current.rotation.y += delta;
+  //   sphereRef.current.rotation.x += delta;
+  //   sphereRef.current.rotation.y += delta;
+  //   torusRef.current.rotation.y += delta * 0.2;
   });
+  const N = 10;
+  const cellsCount = N * N * N;
+  
+  // // const cells = useMemo(() => {
+  // //   const instances = [];
+  // //   for (let i = 0; i < cellsCount; i++) {
+  // //     instances.push({
+  // //       key: `instance_${i}`,
+  // //       position: [
+  // //         (Math.random() - 0.5) * 4,
+  // //         6 + i * 0.2,
+  // //         (Math.random() - 0.5) * 4,
+  // //       ]
+  // //     });
+  // //   }
+  // //   return instances;
+  // // }, [cellsCount]);
 
-  const pillJump = () => {
-    console.log(pillRef.current)
-    pillRef.current.applyImpulse({ x: 0, y: 100, z: 0 }, true);
-    pillRef.current.applyTorqueImpulse({
-      x: 0,
-      y: Math.random() * 100 - 50,
-      z: 0,
-    });
-  };
+  // const cells = new Array(cellsCount);
+  // for (let i = 0; i < cells.length; i++) {
+  //   cells.push({
+  //     key: `instance_${i}`,
+  //     position: [
+  //       (Math.random() - 0.5) * 4,
+  //       6 + i * 0.2,
+  //       (Math.random() - 0.5) * 4,
+  //     ]
+  //   });
+  // }
+
+  const positions = [...Array(100)].map((_, i) => [
+    (i % 10) - 4.5, // x position
+    Math.floor(i / 10) - 4.5, // y position
+    (i % 10) - 4.5, // z position
+  ]);
 
   const {
     boxPosition,
-    spherePosition,
-    torusPosition,
-    floorPositionY,
-    floorSize,
   } = useControls({
     boxPosition: {
-      value: { x: -4, y: 5, z: 0 },
+      value: { x: 0, y: 0, z: 0 },
       step: 0.01,
       joystick: "invertY",
-    },
-    spherePosition: {
-      value: { x: 0, y: 5, z: 0 },
-      step: 0.01,
-      joystick: "invertY",
-    },
-    torusPosition: {
-      value: { x: 4, y: 5, z: 0 },
-      step: 0.01,
-      joystick: "invertY",
-    },
-    floorSize: {
-      value: { w: 20, h: 0.5, d: 20 },
-      step: 0.01,
-    },
-    floorPositionY: {
-      value: -0.25,
-      step: 0.01,
-      min: -5,
-      max: 0,
     },
   });
 
   return (
     <>
-      <RigidBody
-        ref={pillRef}
-        colliders="hull"
-        position={[-4, 3, 2]}
-        rotation={[0, 0, Math.PI / 2]}
+      <Instances
+        limit={1000} // Optional: max amount of items (for calculating buffer size)
+        range={1000} // Optional: draw-range
       >
-        <mesh castShadow receiveShadow onClick={pillJump}>
-          <capsuleGeometry args={[1, 3]} />
-          <meshStandardMaterial color="yellow" />
-        </mesh>
-      </RigidBody>
+        <boxGeometry />
+        <meshStandardMaterial color="lightblue"/>
+        
+        {positions.map((position, i) => (
+          <Instance key={i} position={position} />
+        ))}
+      </Instances>
 
-      <RigidBody
-        colliders="hull"
-        position={[0, 3, 1]}
-        rotation={[0, 0, Math.PI / 2]}
-      >
-        <mesh castShadow receiveShadow onClick={pillJump}>
-          <capsuleGeometry args={[1, 3]} />
-          <meshStandardMaterial color="purple" />
-        </mesh>
-      </RigidBody>
 
-      <RigidBody
-        colliders="hull"
-        position={[4, 3, 4]}
-        rotation={[0, 0, Math.PI / 2]}
-      >
-        <mesh castShadow receiveShadow onClick={pillJump}>
-          <capsuleGeometry args={[1, 3]} />
-          <meshStandardMaterial color="orange" />
-        </mesh>
-      </RigidBody>
 
-      <mesh
+
+    
+      {/* <mesh
         ref={cubeRef}
         position={[boxPosition.x, boxPosition.y, boxPosition.z]}
         receiveShadow
@@ -133,43 +108,17 @@ export default function Experience() {
       >
         <boxGeometry />
         <meshStandardMaterial color="lightgreen" />
-      </mesh>
+      </mesh> */}
 
-      <mesh
-        ref={sphereRef}
-        position={[spherePosition.x, spherePosition.y, spherePosition.z]}
-        receiveShadow
+      {/* <instancedMesh
         castShadow
-      >
-        <icosahedronGeometry />
-        <meshStandardMaterial color="pink" />
-      </mesh>
-      
-      <mesh
-        ref={torusRef}
-        position={[torusPosition.x, torusPosition.y, torusPosition.z]}
         receiveShadow
-        castShadow
+        args={[null, null, cellsCount]}
+        ref={cubeRef}
       >
-        <torusGeometry />
+        <boxGeometry />
         <meshStandardMaterial color="lightblue" />
-      </mesh>
-
-      {/* Floor */}
-      <RigidBody type="fixed" position-y={floorPositionY} restitution={1}>
-        <mesh receiveShadow>
-          <boxGeometry args={[floorSize.w, floorSize.h, floorSize.d]} />
-          <meshStandardMaterial color="white" />
-        </mesh>
-      </RigidBody>
-
-      {/* Walls */}
-      <RigidBody type="fixed">
-        <CuboidCollider args={[10, 5, 0.25]} position={[0, 5, -10]} />
-        <CuboidCollider args={[10, 5, 0.25]} position={[0, 5, 10]} />
-        <CuboidCollider args={[10, 5, 0.25]} position={[-10, 5, 0]} rotation={[0, Math.PI/2, 0]} />
-        <CuboidCollider args={[10, 5, 0.25]} position={[10, 5, 0]} rotation={[0, Math.PI/2, 0]} />
-      </RigidBody>
+      </instancedMesh> */}
     </>
   );
 }

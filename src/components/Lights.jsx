@@ -47,7 +47,7 @@ export default function Lights() {
         ]}
         color="white"
       >
-        <Helper type={DirectionalLightHelper} />
+        {/* <Helper type={DirectionalLightHelper} /> */}
       </directionalLight>
     </>
   );
