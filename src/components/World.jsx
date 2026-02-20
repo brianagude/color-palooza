@@ -72,6 +72,7 @@ export default function Experience() {
   }
   );
 
+
   const { boxPosition } = useControls({
     boxPosition: {
       value: { x: 0, y: 0, z: 0 },
@@ -87,13 +88,22 @@ export default function Experience() {
         range={1000} // Optional: draw-range
       >
         <boxGeometry args={[0.5, 0.5, 0.5]} />
-        {/* <boxGeometry /> */}
         <axesHelper args={[1]} />
-        <meshStandardMaterial color="lightblue" />
+        <meshStandardMaterial />
 
-        {positions.map((position, i) => (
-          <Instance key={i} position={position} />
-        ))}
+        {positions.map((position, i) => {
+          const r = Math.floor((position[0] / N) * 255);
+          const g = Math.floor((position[1] / N) * 255);
+          const b = Math.floor((position[2] / N) * 255);
+          // const color = 'pink';
+          const color = `rgb(${r},${g},${b})`;
+
+          console.log(`rgb(${r},${g},${b})`);
+          
+          return (
+          <Instance key={i} position={position} color={color}/>
+          )
+        })}
       </Instances>
 
       {/* <mesh
