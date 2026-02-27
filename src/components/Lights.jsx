@@ -49,6 +49,19 @@ export default function Lights() {
       >
         {/* <Helper type={DirectionalLightHelper} /> */}
       </directionalLight>
+
+      <directionalLight
+        intensity={directionalLightIntensity}
+        castShadow
+        ref={light}
+        position={[
+          - directionalLightPosition.x,
+          - directionalLightPosition.y,
+          - directionalLightPosition.z,
+        ]}
+        color="white"
+      >
+      </directionalLight>
     </>
   );
 }

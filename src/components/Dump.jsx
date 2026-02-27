@@ -177,3 +177,12 @@ export function Experience() {
     </group>
   );
 }
+
+// TRUE Color?
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red
+THREE.ColorManagement.enabled = false;
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
+
+
+

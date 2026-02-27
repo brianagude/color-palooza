@@ -8,7 +8,7 @@ const inclusiveSans = Inclusive_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "R3F Starter",
+  title: "Color Palooza!",
   description: "An opinionated Next.js starter app for React 3 Fiber projects",
   keywords: [
     "React",

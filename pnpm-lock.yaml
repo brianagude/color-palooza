@@ -32,6 +32,9 @@ importers:
       react-dom:
         specifier: 19.2.1
         version: 19.2.1(react@19.2.1)
+      rybitten:
+        specifier: ^0.29.0
+        version: 0.29.0
       three:
         specifier: ^0.181.2
         version: 0.181.2
@@ -1241,6 +1244,9 @@ packages:
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
+
+  rybitten@0.29.0:
+    resolution: {integrity: sha512-aa5RZ03yYV5VV5cwiz3nCTXEAVAhWa5TY+1gaWg4rl9P9MZ8gQTLMWwkNgnNfHmCGTDpkdb+xQjzbJscQJ+81w==}
 
   scheduler@0.25.0:
     resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
@@ -2472,6 +2478,8 @@ snapshots:
   react@19.2.1: {}
 
   require-from-string@2.0.2: {}
+
+  rybitten@0.29.0: {}
 
   scheduler@0.25.0: {}
 

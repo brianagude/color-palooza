@@ -2,6 +2,7 @@
 
 import { Instance, Instances } from "@react-three/drei";
 import { useControls } from "leva";
+import { ryb2rgb } from 'rybitten';
 
 export default function Experience() {
   const { boxSize, resolution } = useControls({
@@ -41,16 +42,17 @@ export default function Experience() {
     >
       <boxGeometry args={[boxSize.x, boxSize.y, boxSize.z]} />
       <axesHelper args={[1]} />
-      <meshLambertMaterial />
+      <meshBasicMaterial />
+      {/* <meshLambertMaterial /> */}
       {/* <meshStandardMaterial /> */}
 
       {(() => {
 
         return positions.map((position, i) => {
-          const r = Math.floor((position[0] / N) * 255);
-          const g = Math.floor((position[1] / N) * 255);
-          const b = Math.floor((position[2] / N) * 255);
-          const color = `rgb(${r},${g},${b})`;
+          const r = position[0] / (N-1);
+          const y = position[1] / (N-1);
+          const b = position[2] / (N-1);
+          const color = ryb2rgb([r,y,b]);
 
           return <Instance key={i} position={position} color={color} />;
         });
