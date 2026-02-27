@@ -11,7 +11,6 @@ import * as THREE from "three";
 import World from "@/components/World";
 
 export default function Page() {
-  const [background, setBackground] = useState([0, 0, 0]);
 
   const options = {};
   cubes.forEach((cube, key) => {
@@ -22,36 +21,12 @@ export default function Page() {
     preset: {
       options: options,
       label: "Color Space",
-      onChange: (value) => {
-        const curr_cube = cubes.get(value).cube;
-        setBackground(ryb2rgb([1,1,1], { cube: curr_cube }));
-
-        console.log("preset", value);
-        console.log("curr_cube", curr_cube);
-        console.log("bgColor", background);
-        console.log(ryb2rgb([1,1,1], { cube: curr_cube }))
-      }
-    },
+    }
   });
 
-  // const curr_cube = cubes.get(preset).cube;
-  // const bgColor = ryb2rgb([1, 1, 1], { cube: curr_cube });
-  // setBackground(ryb2rgb([1, 1, 1], { cube: curr_cube }));
-
-  // function changeColor(color) {
-  //   const curr_cube = cubes.get(preset).cube;
-  //   setBackground(ryb2rgb(color, { cube: curr_cube }));
-  // }
-
-
-//   const values = useControls({
-//   color: {
-//     value: '#f00',
-//     onChange: (value) => {
-//       console.log('Color changed:', value)
-//     },
-//   },
-// })
+  const curr_cube = cubes.get(preset).cube;
+  const bgColor = ryb2rgb([1, 1, 1], { cube: curr_cube });
+  const bgCSS = `rgb(${bgColor.map((c) => c * 255).join(",")})`;
 
   return (
     <main className="w-screen h-screen">
@@ -67,8 +42,9 @@ export default function Page() {
           camera={{
             position: [15, 15, 15],
           }}
+          style={{ background: bgCSS }}
         >
-          <color args={background} attach="background" />
+          {/* <color args={bgColor} attach="background" /> */}
           {/* <Lights /> */}
           <World />
           <OrbitControls makeDefault />
