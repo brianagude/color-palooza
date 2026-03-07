@@ -12,14 +12,24 @@ import World from "@/components/World";
 
 export default function Page() {
 
-  const options = {};
+  const unsorted_options = {};
   cubes.forEach((cube, key) => {
-    options[cube.title] = key;
+    unsorted_options[cube.title] = key;
   });
+
+
+  const sorted_options = {};
+
+  Object.entries(unsorted_options)
+    .map((entry, _) => ({ title: entry[0], key: entry[1] }))
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .forEach((item) => {
+      sorted_options[item.title] = item.key;
+    });
 
   const { preset } = useControls({
     preset: {
-      options: options,
+      options: sorted_options,
       label: "Color Space",
     }
   });
@@ -46,7 +56,7 @@ export default function Page() {
         >
           {/* <color args={bgColor} attach="background" /> */}
           {/* <Lights /> */}
-          <World />
+          <World preset={preset} />
           <OrbitControls makeDefault />
         </Canvas>
       </StrictMode>

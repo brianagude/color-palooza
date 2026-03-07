@@ -3,8 +3,9 @@
 import { Instance, Instances } from "@react-three/drei";
 import { useControls } from "leva";
 import { ryb2rgb } from 'rybitten';
+import { cubes } from "rybitten/cubes";
 
-export default function Experience() {
+export default function World(args) {
   const { boxSize, resolution } = useControls({
     boxSize: {
       value: { x: 0.5, y: 0.5, z: 0.5 },
@@ -22,15 +23,18 @@ export default function Experience() {
     },
   });
   
+  
+  const curr_cube = cubes.get(args.preset).cube;
 
   const N = resolution;
   const cellsCount = N * N * N;
 
+
   const positions = [...Array(cellsCount)].map((_, i) => {
-    const z = Math.floor(i / (N * N));
+    const z = Math.floor(i / (N * N)) - (N-1)/2;
     const r = i % (N * N);
-    const y = Math.floor(r / N);
-    const x = r % N;
+    const y = Math.floor(r / N) - (N-1)/2;
+    const x = r % N - (N-1)/2;
 
     return [x, y, z];
   });
@@ -41,7 +45,7 @@ export default function Experience() {
       range={cellsCount} // Optional: draw-range
     >
       <boxGeometry args={[boxSize.x, boxSize.y, boxSize.z]} />
-      <axesHelper args={[1]} />
+      {/* <axesHelper args={[1]} /> */}
       <meshBasicMaterial />
       {/* <meshLambertMaterial /> */}
       {/* <meshStandardMaterial /> */}
@@ -49,10 +53,10 @@ export default function Experience() {
       {(() => {
 
         return positions.map((position, i) => {
-          const r = position[0] / (N-1);
-          const y = position[1] / (N-1);
-          const b = position[2] / (N-1);
-          const color = ryb2rgb([r,y,b]);
+          const r = (position[0] + (N-1)/2) / (N-1);
+          const y = (position[1] + (N-1)/2) / (N-1);
+          const b = (position[2] + (N-1)/2) / (N-1);
+          const color = ryb2rgb([r,y,b], { cube: curr_cube });
 
           return <Instance key={i} position={position} color={color} />;
         });
