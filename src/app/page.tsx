@@ -27,15 +27,19 @@ export default function Page() {
       sorted_options[item.title] = item.key;
     });
 
-  const { preset } = useControls({
+  const { preset, mode } = useControls({
     preset: {
       options: sorted_options,
       label: "Color Space",
+    },
+    mode: {
+      value: "RGB",
+      options: ["RGB", "RYB"],
     }
   });
 
   const curr_cube = cubes.get(preset).cube;
-  const bgColor = ryb2rgb([1, 1, 1], { cube: curr_cube });
+  const bgColor = mode === "RYB" ? ryb2rgb([1, 1, 1], { cube: curr_cube }) : [1, 1, 1];
   const bgCSS = `rgb(${bgColor.map((c) => c * 255).join(",")})`;
 
   return (
@@ -56,7 +60,7 @@ export default function Page() {
         >
           {/* <color args={bgColor} attach="background" /> */}
           {/* <Lights /> */}
-          <World preset={preset} />
+          <World preset={preset} mode={mode} />
           <OrbitControls makeDefault />
         </Canvas>
       </StrictMode>
