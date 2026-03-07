@@ -29,6 +29,13 @@ export default function World(args) {
   const N = resolution;
   const cellsCount = N * N * N;
 
+  /* Calculate landmarks used in RGB mode, which are the closest points in the cube to the 
+     rgb color for each vertex of the rgb cube: 
+     (white, red, yellow, orange, blue, violet, green, black)
+
+     This means that in RGB mode, the colors will be off in low resolution cubes, 
+     but will be more accurate in higher resolution cubes.
+  */
   const landmarks = curr_cube.map(c => c.map(v => Math.round(v * (N - 1)) - (N-1)/2));
   console.log(landmarks);
 
@@ -78,11 +85,11 @@ export default function World(args) {
           const b = args.mode === "RYB" ? ryb[2] : c3;
           const color = [r,g,b];
 
-          if (isLandmark && args.mode === "RGB") {
+          if (isLandmark && args.mode === "RYB-In-RGB") {
             return <Instance key={i} position={position} color={color} scale={2} />;
           }
 
-          return <Instance key={i} position={position} color={color} scale={args.mode === "RGB" ? 0.2 : 1} />;
+          return <Instance key={i} position={position} color={color} scale={args.mode === "RYB-In-RGB" ? 0.2 : 1} />;
         });
       })()
       }

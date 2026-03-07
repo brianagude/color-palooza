@@ -33,8 +33,8 @@ export default function Page() {
       label: "Color Space",
     },
     mode: {
-      value: "RGB",
-      options: ["RGB", "RYB"],
+      value: "RYB",
+      options: ["RYB", "RYB-In-RGB", "RGB"],
     }
   });
 
