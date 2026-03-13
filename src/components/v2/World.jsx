@@ -48,15 +48,15 @@ export default function World(args) {
     return [x, y, z];
   });
 
-  const wallHeight = N;
-  const wallLength = N;
+  const wallSize = N - 1;
+  const half = (N - 1) / 2;
   const wallOpacity = 0.05;
 
   return (
     <>
       <Instances
-        limit={64000} // Optional: max amount of items (for calculating buffer size)
-        range={cellsCount} // Optional: draw-range
+        limit={64000}
+        range={cellsCount}
       >
         <meshBasicMaterial />
         <boxGeometry args={[boxSize.x, boxSize.y, boxSize.z]} />
@@ -91,43 +91,33 @@ export default function World(args) {
 
       {/* Visual walls */}
       {/* Back wall */}
-        <mesh position={[0, 0, -wallLength / 2]}>
-          <boxGeometry args={[wallLength, wallHeight, 0.1]} />
-          <meshStandardMaterial 
-            transparent 
-            opacity={wallOpacity}
-            color="red"
-          />
+        <mesh position={[0, 0, -half]}>
+          <boxGeometry args={[wallSize, wallSize, 0.1]} />
+          <meshStandardMaterial transparent opacity={wallOpacity} color="red" />
         </mesh>
 
         {/* Front wall */}
-        <mesh position={[0, 0, wallLength / 2]}>
-          <boxGeometry args={[wallLength, wallHeight, 0.1]} />
-          <meshStandardMaterial 
-            transparent 
-            opacity={wallOpacity}
-            color="green"
-          />
+        <mesh position={[0, 0, half]}>
+          <boxGeometry args={[wallSize, wallSize, 0.1]} />
+          <meshStandardMaterial transparent opacity={wallOpacity} color="green" />
         </mesh>
 
         {/* Left wall */}
-        <mesh position={[-wallLength / 2, 0, 0]} rotation-y={Math.PI / 2}>
-          <boxGeometry args={[wallLength, wallHeight, 0.1]} />
-          <meshStandardMaterial 
-            transparent 
-            opacity={wallOpacity}
-            color="orange"
-          />
+        <mesh position={[-half, 0, 0]} rotation-y={Math.PI / 2}>
+          <boxGeometry args={[wallSize, wallSize, 0.1]} />
+          <meshStandardMaterial transparent opacity={wallOpacity} color="orange" />
         </mesh>
 
         {/* Right wall */}
-        <mesh position={[wallLength / 2, 0, 0]} rotation-y={Math.PI / 2}>
-          <boxGeometry args={[wallLength, wallHeight, 0.1]} />
-          <meshStandardMaterial 
-            transparent 
-            opacity={wallOpacity}
-            color="blue"
-          />
+        <mesh position={[half, 0, 0]} rotation-y={Math.PI / 2}>
+          <boxGeometry args={[wallSize, wallSize, 0.1]} />
+          <meshStandardMaterial transparent opacity={wallOpacity} color="blue" />
+        </mesh>
+
+        {/* Floor */}
+        <mesh position={[0, -half, 0]} rotation-x={-Math.PI / 2} receiveShadow>
+          <boxGeometry args={[wallSize, wallSize, 0.1]} />
+          <meshStandardMaterial transparent opacity={wallOpacity} color="black" />
         </mesh>
     </>
   );
