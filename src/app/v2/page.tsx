@@ -7,16 +7,14 @@ import { StrictMode } from "react";
 import { ryb2rgb } from "rybitten";
 import { cubes } from "rybitten/cubes";
 import * as THREE from "three";
-// import Lights from "@/components/Lights";
-import World from "@/components/v1/World";
+import Lights from "@/components/v2/Lights";
+import World from "@/components/v2/World";
 
 export default function Page() {
-
   const unsorted_options = {};
   cubes.forEach((cube, key) => {
     unsorted_options[cube.title] = key;
   });
-
 
   const sorted_options = {};
 
@@ -33,13 +31,14 @@ export default function Page() {
       label: "Color Space",
     },
     mode: {
-      value: "RYB",
+      value: "RYB-In-RGB",
       options: ["RYB", "RYB-In-RGB", "RGB"],
-    }
+    },
   });
 
   const curr_cube = cubes.get(preset).cube;
-  const bgColor = mode === "RYB" ? ryb2rgb([1, 1, 1], { cube: curr_cube }) : [1, 1, 1];
+  const bgColor =
+    mode === "RYB" ? ryb2rgb([1, 1, 1], { cube: curr_cube }) : [1, 1, 1];
   const bgCSS = `rgb(${bgColor.map((c) => c * 255).join(",")})`;
 
   return (
@@ -58,8 +57,7 @@ export default function Page() {
           }}
           style={{ background: bgCSS }}
         >
-          {/* <color args={bgColor} attach="background" /> */}
-          {/* <Lights /> */}
+          <Lights />
           <World preset={preset} mode={mode} />
           <OrbitControls makeDefault />
         </Canvas>
