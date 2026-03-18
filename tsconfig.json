@@ -31,6 +31,6 @@
     "**/*.mts",
     "src/components/how-many/Scene.jsx",
     "src/components/how-many/Model.jsx"
-, "src/components/textbox/Model.jsx"  ],
+, "src/components/textbox/Model.jsx", "src/styles/design-tokens.jsx", "src/app/page.jsx", "src/app/layout.jsx", "src/app/v2/page.jsx"  ],
   "exclude": ["node_modules"]
 }

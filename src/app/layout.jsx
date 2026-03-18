@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inclusive_Sans } from "next/font/google";
 import "@/styles/globals.css";
 
@@ -7,7 +6,7 @@ const inclusiveSans = Inclusive_Sans({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Color Palooza!",
   description: "An opinionated Next.js starter app for React 3 Fiber projects",
   keywords: [
@@ -24,11 +23,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inclusiveSans.variable} antialiased`}>
       <body>{children}</body>
