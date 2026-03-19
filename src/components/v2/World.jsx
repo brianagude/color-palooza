@@ -53,7 +53,7 @@ export default function World(args) {
 
   const wallSize = N - 1;
   const half = (N - 1) / 2;
-  const wallOpacity = 1;
+  const wallOpacity = 0.1;
 
   return (
     <>
@@ -105,7 +105,9 @@ export default function World(args) {
           opacity={wallOpacity}
           side={THREE.BackSide}
           depthWrite={false}
-          color="red"
+          roughness={0.05}
+          metalness={0}
+          color="white"
         />
       </mesh>
 
@@ -117,7 +119,9 @@ export default function World(args) {
           opacity={wallOpacity}
           side={THREE.BackSide}
           depthWrite={false}
-          color="green"
+          roughness={0.05}
+          metalness={0}
+          color="white"
         />
       </mesh>
 
@@ -129,7 +133,9 @@ export default function World(args) {
           opacity={wallOpacity}
           side={THREE.BackSide}
           depthWrite={false}
-          color="orange"
+          roughness={0.05}
+          metalness={0}
+          color="white"
         />
       </mesh>
 
@@ -141,7 +147,9 @@ export default function World(args) {
           opacity={wallOpacity}
           side={THREE.BackSide}
           depthWrite={false}
-          color="blue"
+          roughness={0.05}
+          metalness={0}
+          color="white"
         />
       </mesh>
 
@@ -153,7 +161,9 @@ export default function World(args) {
           opacity={wallOpacity}
           side={THREE.BackSide}
           depthWrite={false}
-          color="purple"
+          roughness={0.05}
+          metalness={0}
+          color="white"
         />
       </mesh>
 
@@ -165,7 +175,9 @@ export default function World(args) {
           opacity={wallOpacity}
           side={THREE.BackSide}
           depthWrite={false}
-          color="yellow"
+          roughness={0.05}
+          metalness={0}
+          color="white"
         />
       </mesh>
     </>
