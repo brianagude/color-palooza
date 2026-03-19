@@ -9,9 +9,9 @@ import * as THREE from "three";
 export default function World(args) {
   const { boxSize, resolution } = useControls({
     boxSize: {
-      value: { x: 0.5, y: 0.5, z: 0.5 },
-      step: 0.01,
-      max: 1,
+      value: 10,
+      step: 0.5,
+      max: 10,
       min: 0,
       joystick: "invertY",
     },
@@ -26,70 +26,32 @@ export default function World(args) {
 
   const curr_cube = cubes.get(args.preset).cube;
 
-  const N = resolution;
-  const cellsCount = N * N * N;
-  const landmarks = curr_cube.map((c) =>
-    c.map((v) => Math.round(v * (N - 1)) - (N - 1) / 2),
-  );
+  const wallSize = 256;
+  const cellsCount = 8;
 
-  /* From Google */
-  const equalArrays = (arr1, arr2) => {
-    return (
-      arr1.length === arr2.length &&
-      arr1.every((element, index) => {
-        return element === arr2[index];
-      })
-    );
-  };
-
-  const positions = [...Array(cellsCount)].map((_, i) => {
-    const z = Math.floor(i / (N * N)) - (N - 1) / 2;
-    const r = i % (N * N);
-    const y = Math.floor(r / N) - (N - 1) / 2;
-    const x = (r % N) - (N - 1) / 2;
-
-    return [x, y, z];
+  const landmarks = curr_cube.map((c) => {
+    const position = c.map((v) => (v - 0.5) * wallSize);
+    return { position, color: c };
   });
 
-  const wallSize = N - 1;
-  const half = (N - 1) / 2;
+  
+  const half = wallSize / 2;
   const wallOpacity = 0.1;
 
   return (
     <>
       <Instances limit={64000} range={cellsCount}>
         <meshBasicMaterial />
-        <boxGeometry args={[boxSize.x, boxSize.y, boxSize.z]} />
+        <sphereGeometry args={[boxSize]} />
 
         {(() => {
-          return positions.map((position, i) => {
-            const isLandmark = landmarks.some((l) => {
-              console.log(l, position);
-              return equalArrays(l, position);
-            });
-
-            const c1 = (position[0] + (N - 1) / 2) / (N - 1);
-            const c2 = (position[1] + (N - 1) / 2) / (N - 1);
-            const c3 = (position[2] + (N - 1) / 2) / (N - 1);
-            const ryb = ryb2rgb([c1, c2, c3], { cube: curr_cube });
-
-            const r = args.mode === "RYB" ? ryb[0] : c1;
-            const g = args.mode === "RYB" ? ryb[1] : c2;
-            const b = args.mode === "RYB" ? ryb[2] : c3;
-            const color = [r, g, b];
-
-            if (isLandmark && args.mode === "RYB-In-RGB") {
-              return (
-                <Instance key={i} position={position} color={color} scale={2} />
-              );
-            }
-
+          return landmarks.map((landmark, i) => {
             return (
               <Instance
                 key={i}
-                position={position}
-                color={color}
-                scale={args.mode === "RYB-In-RGB" ? 0 : 1}
+                position={landmark.position}
+                color={landmark.color}
+                scale={2}
               />
             );
           });
