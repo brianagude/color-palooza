@@ -1,72 +1,62 @@
-# R3F Starter
+# Color Palooza
 
-An **opinionated** React Three Fiber starter template built on Next.js. This is a learning project that will evolve as I explore new R3F patterns and techniques.
+An interactive 3D visualization exploring the correlation between historical RYB color spaces and RGB, built with React Three Fiber and Next.js.
 
-> ⚠️ **Note**: This starter reflects my current understanding and preferences. As I learn new things in React Three Fiber, the structure, patterns, and choices here will be updated accordingly.
+**Live site:** https://color-palooza.pages.dev/
 
-## What's This?
+## What Is It?
 
-A 3D web application starter that combines Next.js with React Three Fiber for building interactive 3D experiences. The setup includes physics simulation, lighting controls, performance monitoring, and debugging tools.
+Color Palooza visualizes how different historical color models relate to the RGB cube. Artists and painters throughout history have used RYB (Red-Yellow-Blue) as a conceptual color model — but "RYB" isn't a single standard. Different traditions and color theorists defined the relationships between hues differently, resulting in distinct color cubes that produce noticeably different results when mapping to RGB.
+
+This project uses [rybitten](https://github.com/meodai/rybitten), a library that encodes several of these historical color spaces as 3D lookup tables. By rendering those lookup tables as navigable 3D voxel grids, you can visually compare how each model distributes colors through space — and see exactly where yellow sits relative to orange, or how a given tradition places violet versus blue.
+
+There are three viewing modes:
+
+- **RYB** — the color cube rendered in its native RYB space (the background also shifts to match white's RYB equivalent)
+- **RYB-In-RGB** — the RYB landmark colors (the 8 vertices: white, black, red, yellow, blue, orange, green, violet) plotted within the RGB cube, making the geometric distortion visible
+- **RGB** — the standard RGB cube for comparison
+
+## Versions
+
+The site has three iterations accessible by route:
+
+| Route | Description                                                                                                                                                                                                                                                                                                                                   |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`   | Voxel grid of boxes — every point in the NxNxN cube colored by the selected preset and mode. Use the Leva panel to switch color space presets, mode, box size, and resolution.                                                                                                                                                                |
+| `/v2` | Landmark-only view — just the 8 key colors of the selected color space rendered as spheres inside a glass-walled room. Clean way to see how the corners of the color cube shift between presets.                                                                                                                                              |
+| `/v3` | Camera + audio experiment — live webcam feed with an audio-reactive GLSL glitch shader. Volume from the microphone drives horizontal distortion. Unrelated to the color space work; we toyed with using the camera as a canvas to see how the colors change relative to the color spaces but ultimately decided to move in another direction. |
+
+## Running It
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Then open http://localhost:3000.
+
+```bash
+pnpm build   # production build
+pnpm start   # production server
+pnpm lint    # lint with Biome
+pnpm format  # format with Biome
+```
 
 ## Tech Stack
 
-### Core
-
 - **Next.js 16** (App Router)
-- **React Three Fiber** - React renderer for Three.js
-- **React Three Rapier** - Physics engine wrapper
-- **Drei** - Helpful R3F utilities
-- **Three.js** - 3D library
+- **React Three Fiber** — React renderer for Three.js
+- **Three.js** — 3D library
+- **rybitten** — RYB color space conversions and historical color cube presets
+- **Drei** — R3F utilities (Instances, OrbitControls, shaderMaterial)
+- **Leva** — runtime GUI controls
+- **Tailwind CSS v4**
+- **Biome** — linting and formatting
 
-### Development Tools
+## Collaboration
 
-- **Leva** - Interactive GUI controls for debugging
-- **r3f-perf** - Performance monitor overlay
-- **Biome** - Fast formatter/linter
-- **Zustand** - State management (available but not currently used)
+Built in collaboration with [@abettercoach](https://github.com/abettercoach), met at [Recurse Center](https://github.com/recursecenter).
 
-### Styling
+## Evolution
 
-- **Tailwind CSS v4** - Utility-first CSS
-- **TypeScript** - Type safety (with JSX support)
-
-## Scripts
-
-```bash
-pnpm dev      # Development server
-pnpm build    # Production build
-pnpm start    # Production server
-pnpm lint     # Lint with Biome
-pnpm format   # Format with Biome
-```
-
-## Dependencies
-
-See `package.json` for full dependency list. Key packages:
-
-- `@react-three/fiber` - React renderer for Three.js
-- `@react-three/rapier` - Physics simulation
-- `@react-three/drei` - R3F utilities and helpers
-- `leva` - GUI controls for runtime tweaking
-- `r3f-perf` - Performance monitoring
-- `three` - Three.js core library
-
-## Key Concepts
-
-This starter uses common R3F patterns:
-
-- React components for Three.js objects
-- `useFrame` for animations
-- Physics via Rapier
-- Leva controls for interactive debugging
-- Performance monitoring overlay
-
-Check the code to see how these are implemented.
-
-## Resources
-
-- [React Three Fiber Docs](https://docs.pmnd.rs/react-three-fiber)
-- [Drei Documentation](https://github.com/pmndrs/drei)
-- [React Three Rapier](https://github.com/pmndrs/react-three-rapier)
-- [Three.js Docs](https://threejs.org/docs/)
-- [Leva Controls](https://github.com/pmndrs/leva)
+The continuation of this project is [paint-palooza](https://github.com/brianagude/paint-palooza).
